@@ -13,7 +13,7 @@ def create_test_pr_environment
   # prep test data
   build_dir='/tmp/thumbs'
   test_repo='davidx/prtester'
-  test_dir="/tmp/thumbs/tmp/#{test_repo.gsub(/\//, '_')}_#{DateTime.now.strftime("%s")}"
+  test_dir="/tmp/thumbs/#{test_repo.gsub(/\//, '_')}_#{DateTime.now.strftime("%s")}"
 
   FileUtils.rm_rf(build_dir)
   FileUtils.mkdir_p(build_dir)
@@ -24,7 +24,7 @@ def create_test_pr_environment
 
   g.checkout('master')
   pr_branch="feature_#{DateTime.now.strftime("%s")}"
-  File.open("#{test_dir}/Makefile", "a") do |f|
+  File.open("#{test_dir}/testfile1", "a") do |f|
     f.syswrite(DateTime.now.to_s)
   end
 
@@ -80,18 +80,4 @@ class HelloWorldTest < Test::Unit::TestCase
 
     p pr_worker.state
   end
-
-
-end
-
-
-# TODO cleanup branches
-
-
-unit_tests do
- test "process payload"  do
-   repo, pr = process_payload(COMMENT_PAYLOAD)
-   prw=PullRequestWorker.new(:repo=>repo,:pr=>pr)
-   assert prw.kind_of?(PullRequestWorker)
- end
 end

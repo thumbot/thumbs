@@ -1,6 +1,18 @@
 module Thumbs
   MINIMUM_REVIEWERS=2
 
+  def self.start_logger
+    mylogger = Logger.new 'mylog'
+    formatter = PatternFormatter.new(:pattern => "[%l] %d :Thumbs: %1m")
+    mylogger.outputters = StdoutOutputter.new("console", :formatter => formatter)
+    mylogger.level = Log4r::DEBUG
+  end
+  def self.authenticate_github
+    Octokit.configure do |c|
+      c.login = ENV['GITHUB_USER']
+      c.password = ENV['GITHUB_PASS']
+    end
+  end
   def process_payload(payload)
     [payload['repository']['full_name'], payload['issue']['number']]
   end
@@ -166,7 +178,8 @@ module Thumbs
       begin
         mylogger.debug("PR ##{@pr.number} Starting merge attempt")
         client = Octokit::Client.new(:login => ENV['GITHUB_USER1'], :password => ENV['GITHUB_PASS1'])
-        client.merge_pull_request(@repo, @pr.number, commit_message = 'Thumbs Git Robot Merged. Looks good :+1: :+1: !', options = {})
+        commit_message = 'Thumbs Git Robot Merged. Looks good :+1: :+1: !'
+        client.merge_pull_request(@repo, @pr.number, commit_message, options = {})
         mylogger.debug "PR ##{@pr.number} Merge OK"
       rescue StandardError => e
         log_message = "PR ##{@pr.number} Merge FAILED #{e.inspect}"

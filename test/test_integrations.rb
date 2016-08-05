@@ -83,6 +83,7 @@ unit_tests do
   test "merge pr" do
     pr_worker = Thumbs::PullRequestWorker.new(:repo => TEST_PR.base.repo.full_name, :pr => TEST_PR.number)
     assert_false pr_worker.valid_for_merge?
+    assert pr_worker.reviews.length > 1
 
     pr_worker.cleanup_build_dir
     pr_worker.clone

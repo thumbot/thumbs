@@ -9,15 +9,8 @@ require 'git'
 $:.unshift(File.join(File.dirname(__FILE__), '/lib'))
 require 'thumbs'
 
-mylogger = Logger.new 'mylog'
-formatter = PatternFormatter.new(:pattern => "[%l] %d :Thumbs: %1m")
-mylogger.outputters = StdoutOutputter.new("console", :formatter => formatter)
-mylogger.level = Log4r::DEBUG
-
-Octokit.configure do |c|
-  c.login = ENV['GITHUB_USER']
-  c.password = ENV['GITHUB_PASS']
-end
+Thumbs.start_logger
+Thumbs.authenticate_github
 
 include Thumbs
 
