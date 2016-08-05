@@ -194,15 +194,16 @@ module Thumbs
 
       begin
         log.debug("PR ##{@pr.number} Starting merge attempt")
-        client = Octokit::Client.new(:login => ENV['GITHUB_USER1'], :password => ENV['GITHUB_PASS1'])
+        client = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
         commit_message = 'Thumbs Git Robot Merged. Looks good :+1: :+1: !'
         comment_message=""
+        reviewers_string=reviews.collect{|r| "@#{r[:user][:login]}"  }.join(",")
         s = ERB.new(<<-BLOCK).result(binding)
 Looks good! :+1:
-<%= reviews.length %> Code reviews from: <%= reviews.collect{|r| "@#{r[:user][:login]}"  }.join(",")} %>
+Code reviews from: <%= reviewers_string %>.
 Merging and closing this PR.
 Build Status:
-<% @build_status[:steps].each do |step_name| -%>
+<% @build_status[:steps].each do |step_name, status| %>
 #### <%= step_name %>
 ```
 <%= @build_status[:steps][step_name].to_yaml %>
@@ -218,6 +219,7 @@ Build Status:
 #
 #         EOS
         client.merge_pull_request(@repo, @pr.number, commit_message, options = {})
+        add_comment "Merge successfull!"
         log.debug "PR ##{@pr.number} Merge OK"
       rescue StandardError => e
         log_message = "PR ##{@pr.number} Merge FAILED #{e.inspect}"
@@ -253,7 +255,7 @@ Build Status:
       client.add_comment(@repo, @pr.number, comment, options = {})
     end
     def close
-      client = Octokit::Client.new(:login => ENV['GITHUB_USER1'], :password => ENV['GITHUB_PASS1'])
+      client = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
       client.close_pull_request(@repo, @pr.number)
     end
   end

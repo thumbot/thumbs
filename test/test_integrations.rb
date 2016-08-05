@@ -17,18 +17,26 @@ def create_test_pr(repo_name)
   g.branch(pr_branch).checkout
   g.repack
   system("cd #{test_dir} && git push -q origin #{pr_branch}")
-  client1 = Octokit::Client.new(:login => ENV['GITHUB_USER1'], :password => ENV['GITHUB_PASS1'])
+  client1 = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
   pr = client1.create_pull_request(repo_name, "master", pr_branch, "Testing PR", "Thumbs Git Robot: This pr has been created for testing purposes")
   prw=Thumbs::PullRequestWorker.new(:repo=>repo_name, :pr=>pr.number)
+
   prw
 end
-
+def create_test_code_reviews(test_repo, pr_number)
+  client1 = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
+  client1.add_comment(test_repo, pr_number, "I think this is pretty sweet!", options = {})
+  client2 = Octokit::Client.new(:login => ENV['GITHUB_USER2'], :password => ENV['GITHUB_PASS2'])
+  client2.add_comment(test_repo, pr_number, "YAAAAAAAASSSS +1", options = {})
+  client3 = Octokit::Client.new(:login => ENV['GITHUB_USER3'], :password => ENV['GITHUB_PASS3'])
+  client3.add_comment(test_repo, pr_number, "Looks good +1", options = {})
+end
 
 unit_tests do
 
   test "can try pr merge" do
-    test_pr_worker=create_test_pr("davidx/prtester")
-    
+    test_pr_worker=create_test_pr("BashoOps/prtester")
+    create_test_code_reviews(test_pr_worker.repo, test_pr_worker.pr.number)
     assert test_pr_worker.respond_to?(:try_merge)
     status = test_pr_worker.try_merge
 
@@ -95,7 +103,8 @@ unit_tests do
     test_pr_worker.close
   end
   test "should pr be merged" do
-    test_pr_worker=create_test_pr("davidx/prtester")
+    test_pr_worker=create_test_pr("BashoOps/prtester")
+
     pr = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
     assert test_pr_worker.respond_to?(:reviews)
 
@@ -105,13 +114,13 @@ unit_tests do
   end
 
   test "merge pr" do
-    test_pr_worker=create_test_pr("davidx/prtester")
+    test_pr_worker=create_test_pr("BashoOps/prtester")
 
     pr_worker = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
     assert pr_worker.reviews.length == 0
 
     assert_false pr_worker.valid_for_merge?
-    create_test_code_reviews("davidx/prtester", test_pr_worker.pr.number)
+    create_test_code_reviews("BashoOps/prtester", test_pr_worker.pr.number)
 
     assert pr_worker.reviews.length == 2
 
@@ -130,16 +139,16 @@ unit_tests do
 
     assert prw2.kind_of?(Thumbs::PullRequestWorker), prw2.inspect
 
-    assert_equal "davidx/prtester", prw2.repo
+    assert_equal "BashoOps/prtester", prw2.repo
     assert_false prw2.valid_for_merge?
     assert_false prw2.open?
 
   end
 
   test "add comment" do
-    client1 = Octokit::Client.new(:login => ENV['GITHUB_USER1'], :password => ENV['GITHUB_PASS1'])
+    client1 = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
 
-    test_pr_worker = create_test_pr("davidx/prtester")
+    test_pr_worker = create_test_pr("BashoOps/prtester")
     pr_worker = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
     comments_list = pr_worker.comments
 
@@ -154,12 +163,5 @@ unit_tests do
     pr_worker.close
     assert pr_worker.state == "closed"
   end
-  def create_test_code_reviews(test_repo, pr_number)
-    client1 = Octokit::Client.new(:login => ENV['GITHUB_USER1'], :password => ENV['GITHUB_PASS1'])
-    client1.add_comment(test_repo, pr_number, "I think this is pretty sweet!", options = {})
-    client2 = Octokit::Client.new(:login => ENV['GITHUB_USER2'], :password => ENV['GITHUB_PASS2'])
-    client2.add_comment(test_repo, pr_number, "YAAAAAAAASSSS +1", options = {})
-    client3 = Octokit::Client.new(:login => ENV['GITHUB_USER3'], :password => ENV['GITHUB_PASS3'])
-    client3.add_comment(test_repo, pr_number, "Looks good +1", options = {})
-  end
+
 end

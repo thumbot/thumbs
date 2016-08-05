@@ -39,7 +39,11 @@ post '/webhook' do
   pr_worker.try_run_build_step("test", "make test")
 
   if pr_worker.valid_for_merge?
+
     pr_worker.merge
+  else
+    log.debug "received webhook but unable to merge pr_worker.valid_for_merge? False"
+    log.debug pr_worker.build_status
   end
   #log.debug pr_worker.build_status.to_yaml
   "OK"
