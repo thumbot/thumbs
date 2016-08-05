@@ -5,6 +5,7 @@ require 'log4r'
 include Log4r
 require 'octokit'
 require 'git'
+require 'erb'
 
 $:.unshift(File.join(File.dirname(__FILE__), '/lib'))
 require 'thumbs'
