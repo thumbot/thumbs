@@ -8,9 +8,6 @@ require 'dust'
 require 'test/test_integrations'
 COMMENT_PAYLOAD = YAML.load(IO.read(File.join( File.expand_path(File.dirname('__FILE__'), './test/data/new_comment_payload.yml'))))
 
-
-TEST_PR=create_test_pr("davidx/prtester")
-
 class HelloWorldTest < Test::Unit::TestCase
   include Rack::Test::Methods
   include Thumbs
@@ -30,19 +27,16 @@ class HelloWorldTest < Test::Unit::TestCase
   end
 
   def test_webhook_mergeable_pr
+    test_pr_worker=create_test_pr("davidx/prtester")
+
     sample_payload = {
-        :repository => { :full_name => TEST_PR.base.repo.full_name},
-        :issue => { :number => TEST_PR.number }
+        :repository => { :full_name => test_pr_worker.repo},
+        :issue => { :number => test_pr_worker.pr.number }
     }
     post '/webhook', sample_payload.to_json
 
     assert last_response.body.include?("OK")
-    pr_worker=Thumbs::PullRequestWorker.new(:repo => TEST_PR.base.repo.full_name, :pr => TEST_PR.number)
 
-    if pr_worker.valid_for_merge?
-      pr_worker.merge
-    end
-
-    p pr_worker.state
+    assert_false test_pr_worker.open?
   end
 end

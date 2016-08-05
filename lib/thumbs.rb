@@ -199,8 +199,8 @@ module Thumbs
         comment_message=""
         add_comment <<-EOS
 Looks good! :+1:
-Code reviews from: #{reviews.collect{|r| r[:user][:login]}.join(",")}
-Merging and Closing this PR.
+2+ Code reviews from: #{reviews.collect{|r| "@#{r[:user][:login]}"  }.join(",")}
+Merging and closing this PR.
 ```
 #{@build_status.to_json}
 ```
@@ -239,6 +239,10 @@ Merging and Closing this PR.
     def add_comment(comment)
       client = Octokit::Client.new
       client.add_comment(@repo, @pr.number, comment, options = {})
+    end
+    def close
+      client = Octokit::Client.new(:login => ENV['GITHUB_USER1'], :password => ENV['GITHUB_PASS1'])
+      client.close_pull_request(@repo, @pr.number)
     end
   end
 end

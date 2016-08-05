@@ -16,31 +16,28 @@ def create_test_pr(repo_name)
   g.commit_all("creating for test PR")
   g.branch(pr_branch).checkout
   g.repack
-  system("cd #{test_dir} && git push origin #{pr_branch}")
+  system("cd #{test_dir} && git push -q origin #{pr_branch}")
   client1 = Octokit::Client.new(:login => ENV['GITHUB_USER1'], :password => ENV['GITHUB_PASS1'])
   pr = client1.create_pull_request(repo_name, "master", pr_branch, "Testing PR", "Thumbs Git Robot: This pr has been created for testing purposes")
-  pr
+  prw=Thumbs::PullRequestWorker.new(:repo=>repo_name, :pr=>pr.number)
+  prw
 end
 
 
 unit_tests do
 
   test "can try pr merge" do
-    repo_name = TEST_PR.base.repo.full_name
-    pr_number = TEST_PR.number
-
-    pr = Thumbs::PullRequestWorker.new(:repo => repo_name, :pr => pr_number)
-    assert pr.kind_of?(Thumbs::PullRequestWorker)
-
-    assert pr.respond_to?(:try_merge)
-    status = pr.try_merge
+    test_pr_worker=create_test_pr("davidx/prtester")
+    
+    assert test_pr_worker.respond_to?(:try_merge)
+    status = test_pr_worker.try_merge
 
     assert status.key?(:result)
     assert status.key?(:message)
 
     assert_equal :ok, status[:result]
 
-    status = pr.try_run_build_step("uptime", "uptime")
+    status = test_pr_worker.try_run_build_step("uptime", "uptime")
 
     assert status.key?(:exit_code)
     assert status.key?(:result)
@@ -53,7 +50,7 @@ unit_tests do
     assert status.key?(:result)
     assert status[:result]==:ok
 
-    status = pr.try_run_build_step("uptime", "uptime -ewkjfdew 2>&1")
+    status = test_pr_worker.try_run_build_step("uptime", "uptime -ewkjfdew 2>&1")
 
     assert status.key?(:exit_code)
     assert status.key?(:result)
@@ -66,7 +63,7 @@ unit_tests do
     assert status.key?(:result)
     assert status[:result]==:error
 
-    status = pr.try_run_build_step("build", "make build")
+    status = test_pr_worker.try_run_build_step("build", "make build")
 
     assert status.key?(:exit_code)
     assert status.key?(:result)
@@ -79,10 +76,10 @@ unit_tests do
     assert status.key?(:result)
     assert status[:result]==:ok
 
-    assert_equal "cd /tmp/thumbs/#{TEST_PR.base.repo.full_name.gsub(/\//, '_')}_#{TEST_PR.number} && make build", status[:command]
+    assert_equal "cd /tmp/thumbs/#{test_pr_worker.repo.gsub(/\//, '_')}_#{test_pr_worker.pr.number} && make build", status[:command]
     assert_equal "BUILD OK\n", status[:output]
 
-    status = pr.try_run_build_step("test", "make test")
+    status = test_pr_worker.try_run_build_step("test", "make test")
 
     assert status.key?(:exit_code)
     assert status.key?(:result)
@@ -95,24 +92,26 @@ unit_tests do
     assert status[:exit_code]==0
     assert status.key?(:result)
     assert status[:result]==:ok
-
+    test_pr_worker.close
   end
   test "should pr be merged" do
-    pr = Thumbs::PullRequestWorker.new(:repo => TEST_PR.base.repo.full_name, :pr => TEST_PR.number)
-    assert pr.respond_to?(:reviews)
+    test_pr_worker=create_test_pr("davidx/prtester")
+    pr = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
+    assert test_pr_worker.respond_to?(:reviews)
 
-    assert pr.respond_to?(:valid_for_merge?)
-
+    assert test_pr_worker.respond_to?(:valid_for_merge?)
+    assert_false test_pr_worker.valid_for_merge?
+    test_pr_worker.close
   end
 
   test "merge pr" do
-    test_pr=create_test_pr("davidx/prtester")
+    test_pr_worker=create_test_pr("davidx/prtester")
 
-    pr_worker = Thumbs::PullRequestWorker.new(:repo => test_pr.base.repo.full_name, :pr => test_pr.number)
+    pr_worker = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
     assert pr_worker.reviews.length == 0
 
     assert_false pr_worker.valid_for_merge?
-    create_test_code_reviews("davidx/prtester", test_pr.number)
+    create_test_code_reviews("davidx/prtester", test_pr_worker.pr.number)
 
     assert pr_worker.reviews.length == 2
 
@@ -127,7 +126,7 @@ unit_tests do
     pr_worker.merge
 
     sleep 5
-    prw2 = Thumbs::PullRequestWorker.new(:repo => test_pr.base.repo.full_name, :pr => test_pr.number)
+    prw2 = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
 
     assert prw2.kind_of?(Thumbs::PullRequestWorker), prw2.inspect
 
@@ -140,19 +139,20 @@ unit_tests do
   test "add comment" do
     client1 = Octokit::Client.new(:login => ENV['GITHUB_USER1'], :password => ENV['GITHUB_PASS1'])
 
-    test_pr = create_test_pr("davidx/prtester")
-    pr_worker = Thumbs::PullRequestWorker.new(:repo => test_pr.base.repo.full_name, :pr => test_pr.number)
+    test_pr_worker = create_test_pr("davidx/prtester")
+    pr_worker = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
     comments_list = pr_worker.comments
 
-    client1.add_comment(test_pr.base.repo.full_name, test_pr.number, "Adding", options = {})
+    client1.add_comment(test_pr_worker.repo, test_pr_worker.pr.number, "Adding", options = {})
 
     pr_worker.add_comment("comment")
 
-    pr_worker = Thumbs::PullRequestWorker.new(:repo => test_pr.base.repo.full_name, :pr => test_pr.number)
+    pr_worker = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
 
     new_comments_list = pr_worker.comments
     assert new_comments_list.length > comments_list.length
-
+    pr_worker.close
+    assert pr_worker.state == "closed"
   end
   def create_test_code_reviews(test_repo, pr_number)
     client1 = Octokit::Client.new(:login => ENV['GITHUB_USER1'], :password => ENV['GITHUB_PASS1'])
