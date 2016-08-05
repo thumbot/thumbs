@@ -2,10 +2,10 @@ module Thumbs
   MINIMUM_REVIEWERS=2
 
   def self.start_logger
-    mylogger = Logger.new 'mylog'
+    log = Logger.new 'mylog'
     formatter = PatternFormatter.new(:pattern => "[%l] %d :Thumbs: %1m")
-    mylogger.outputters = StdoutOutputter.new("console", :formatter => formatter)
-    mylogger.level = Log4r::DEBUG
+    log.outputters = StdoutOutputter.new("console", :formatter => formatter)
+    log.level = Log4r::DEBUG
   end
   def self.authenticate_github
     Octokit.configure do |c|
@@ -20,6 +20,8 @@ module Thumbs
   class PullRequestWorker
     attr_reader :build_dir
     attr_reader :build_status
+    attr_reader :repo
+    attr_reader :pr
     def initialize(options)
       @repo = options[:repo]
       @pr = Octokit.pull_request(options[:repo], options[:pr])
@@ -36,7 +38,7 @@ module Thumbs
     end
 
     def try_merge
-      mylogger=Logger['mylog']
+      log=Logger['mylog']
 
       pr_branch="feature_#{DateTime.now.strftime("%s")}"
       target_branch='master'
@@ -49,14 +51,14 @@ module Thumbs
         g.checkout(@pr.head.sha)
         g.checkout(target_branch)
         g.branch(pr_branch).checkout
-        mylogger.debug "Trying merge #{@repo}:PR##{@pr.number} \" #{@pr.title}\" #{@pr.head.sha} onto #{target_branch}"
+        log.debug "Trying merge #{@repo}:PR##{@pr.number} \" #{@pr.title}\" #{@pr.head.sha} onto #{target_branch}"
         g.merge("#{@pr.head.sha}")
         status[:ended_at]=DateTime.now
         status[:result]=:ok
         status[:message]="Merge Success"
       rescue StandardError => e
-        mylogger.error "Merge Failed"
-        mylogger.debug "PR ##{@pr[:number]} END"
+        log.error "Merge Failed"
+        log.debug "PR ##{@pr[:number]} END"
 
         status[:result]=:error
         status[:message]="Merge test failed"
@@ -68,7 +70,7 @@ module Thumbs
     end
 
     def try_run_build_step(name, command)
-      mylogger = Logger['mylog']
+      log = Logger['mylog']
 
       status={}
 
@@ -91,7 +93,7 @@ module Thumbs
           status[:exit_code] = $?.exitstatus
 
       @build_status[:steps][name.to_sym]=status
-      mylogger.debug "[ #{name.upcase} ] [#{result.upcase}] \"#{command}\""
+      log.debug "[ #{name.upcase} ] [#{result.upcase}] \"#{command}\""
       status
     end
 
@@ -113,54 +115,69 @@ module Thumbs
     end
 
     def valid_for_merge?
-      mylogger = Logger['mylog']
-      mylogger.debug "determine valid_for_merge? #{@repo} #{@pr.number}"
+      log = Logger['mylog']
+      log.debug "determine valid_for_merge? #{@repo} #{@pr.number}"
+      log_msg_head="#{@repo}##{@pr.number} valid_for_merge? "
+      unless state == "open"
+        log.debug "#{log_msg_head} state != open"
+        return false
+      end
+      unless mergeable?
+        log.debug "#{log_msg_head} != mergeable? "
+        return false
+      end
+      unless mergeable_state == "clean"
+        log.debug "#{log_msg_head} mergeable_state != clean #{mergeable_state} "
+        return false
+      end
+
       return false unless @build_status.key?(:steps)
       return false unless @build_status[:steps].key?(:merge)
       return false unless @build_status[:steps].key?(:build)
       return false unless @build_status[:steps].key?(:test)
-      mylogger.debug "passed initial"
-      mylogger.debug @pr.state
+
+      log.debug "passed initial"
+      log.debug @pr.state
       @build_status[:steps].each_key do |name|
          unless @build_status[:steps][name].key?(:result)
            return false
          end
          unless @build_status[:steps][name][:result]==:ok
-           mylogger.debug "result not :ok, not valid for merge"
+           log.debug "result not :ok, not valid for merge"
            return false
          end
       end
-      mylogger.debug "all keys and result ok present"
-      mylogger.debug "review_count: #{reviews.length} >= #{MINIMUM_REVIEWERS}"
+      log.debug "all keys and result ok present"
+      log.debug "review_count: #{reviews.length} >= #{MINIMUM_REVIEWERS}"
 
       unless reviews.length >= MINIMUM_REVIEWERS
-        mylogger.debug " #{reviews.length} !>= #{MINIMUM_REVIEWERS}"
+        log.debug " #{reviews.length} !>= #{MINIMUM_REVIEWERS}"
         return false
       end
-
-      true
+      log.debug "#{@pr.number} valid_for_merge? TRUE"
+      return true
     end
 
     def merge
-      mylogger = Logger['mylog']
+      log = Logger['mylog']
       status={}
       status[:started_at]=DateTime.now
       if merged?
-        mylogger.debug "already merged ? nothing to do here"
+        log.debug "already merged ? nothing to do here"
         status[:result]=:error
         status[:message]="already merged"
         status[:ended_at]=DateTime.now
         return status
       end
       unless state == "open"
-        mylogger.debug "pr not open"
+        log.debug "pr not open"
         status[:result]=:error
         status[:message]="pr not open"
         status[:ended_at]=DateTime.now
         return status
       end
       unless mergeable?
-        mylogger.debug "no mergeable? nothing to do here"
+        log.debug "no mergeable? nothing to do here"
         status[:result]=:error
         status[:message]=".mergeable returns false"
         status[:ended_at]=DateTime.now
@@ -168,7 +185,7 @@ module Thumbs
       end
       unless mergeable_state == "clean"
 
-        mylogger.debug ".mergeable_state not clean! "
+        log.debug ".mergeable_state not clean! "
         status[:result]=:error
         status[:message]=".mergeable returns false"
         status[:ended_at]=DateTime.now
@@ -176,22 +193,31 @@ module Thumbs
       end
 
       begin
-        mylogger.debug("PR ##{@pr.number} Starting merge attempt")
+        log.debug("PR ##{@pr.number} Starting merge attempt")
         client = Octokit::Client.new(:login => ENV['GITHUB_USER1'], :password => ENV['GITHUB_PASS1'])
         commit_message = 'Thumbs Git Robot Merged. Looks good :+1: :+1: !'
+        comment_message=""
+        add_comment <<-EOS
+Looks good! :+1:
+Code reviews from: #{reviews.collect{|r| r[:user][:login]}.join(",")}
+Merging and Closing this PR.
+```
+#{@build_status.to_json}
+```
+        EOS
         client.merge_pull_request(@repo, @pr.number, commit_message, options = {})
-        mylogger.debug "PR ##{@pr.number} Merge OK"
+        log.debug "PR ##{@pr.number} Merge OK"
       rescue StandardError => e
         log_message = "PR ##{@pr.number} Merge FAILED #{e.inspect}"
-        mylogger.debug log_message
+        log.debug log_message
 
         status[:message] = log_message
         status[:output]=e.inspect
       end
       status[:ended_at]=DateTime.now
 
-      mylogger.debug "PR Merge ##{@pr[:number]} END"
-      return status
+      log.debug "PR Merge ##{@pr[:number]} END"
+      status
     end
     def mergeable?
       Octokit.pull_request(@repo, @pr.number).mergeable
@@ -206,9 +232,13 @@ module Thumbs
       Octokit.pull_request(@repo, @pr.number).state
     end
     def open?
-      mylogger = Logger['mylog']
-      mylogger.debug("STATE: #{Octokit.pull_request(@repo, @pr.number).state}")
+      log = Logger['mylog']
+      log.debug("STATE: #{Octokit.pull_request(@repo, @pr.number).state}")
       Octokit.pull_request(@repo, @pr.number).state == "open"
+    end
+    def add_comment(comment)
+      client = Octokit::Client.new
+      client.add_comment(@repo, @pr.number, comment, options = {})
     end
   end
 end

@@ -21,7 +21,7 @@ end
 post '/webhook' do
   payload = JSON.parse(request.body.read)
   log = Logger['mylog']
-  log.debug("received webhook #{payload.to_yaml}")
+  #log.debug("received webhook #{payload.to_yaml}")
 
   unless payload.key?('issue')
     log.debug "this is not a comment event, ignoring "
@@ -40,6 +40,6 @@ post '/webhook' do
   if pr_worker.valid_for_merge?
     pr_worker.merge
   end
-  log.debug pr_worker.build_status.to_yaml
+  #log.debug pr_worker.build_status.to_yaml
   "OK"
 end
