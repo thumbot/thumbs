@@ -15,7 +15,7 @@ Thumbs is a simple git integration robot.
   * Test 'make test'
   * Ensures PR contains a minimum of 2 non author review comments
 * Adds a comment on the PR with the build status
-* After final validations, request an PR merge through github API 
+* After final validations, request a PR merge through github API 
 
 
 ## Installation
