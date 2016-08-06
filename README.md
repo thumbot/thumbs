@@ -5,6 +5,12 @@ A simplified integration robot.
 ![Logo][logo]
 [logo]: https://ryanbrownhill.github.io/github-collab-pres/img/thumbsup.png
 
+### What does it do ?
+
+It merges a pull request for you after doing validation.
+ 
+ * (merge,build,test success and >=2 reviewers)
+
 ### How does it work ?
 
 * When a comment is made on a pull request, a github webhook is called on /webhook
