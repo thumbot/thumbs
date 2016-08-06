@@ -4,10 +4,6 @@ A simplified integration robot.
 
 ![Logo][logo]
 [logo]: https://ryanbrownhill.github.io/github-collab-pres/img/thumbsup.png
- 
-## What is this?
-
-Thumbs is a simple git integration robot. 
 
 ### How does it work ?
 
