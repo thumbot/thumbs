@@ -1,5 +1,9 @@
-# Thumbs: A simplified integration robot
- ![alt text](https://ryanbrownhill.github.io/github-collab-pres/img/thumbsup.png "Thumbs")
+# Thumbs
+
+A simplified integration robot.
+
+![Logo][logo]
+[logo]: https://ryanbrownhill.github.io/github-collab-pres/img/thumbsup.png
  
 ## What is this?
 
