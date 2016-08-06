@@ -41,7 +41,7 @@ module Thumbs
       log=Logger['mylog']
 
       pr_branch="feature_#{DateTime.now.strftime("%s")}"
-      target_branch='master'
+      # find the target branch in the pr
 
       status={}
       status[:started_at]=DateTime.now
@@ -49,13 +49,14 @@ module Thumbs
       g = clone(@build_dir)
       begin
         g.checkout(@pr.head.sha)
-        g.checkout(target_branch)
+        g.checkout(@pr.base.ref)
         g.branch(pr_branch).checkout
-        log.debug "Trying merge #{@repo}:PR##{@pr.number} \" #{@pr.title}\" #{@pr.head.sha} onto #{target_branch}"
-        g.merge("#{@pr.head.sha}")
+        log.debug "Trying merge #{@repo}:PR##{@pr.number} \" #{@pr.title}\" #{@pr.head.sha} onto #{@pr.base.ref}"
+        merge_result = g.merge("#{@pr.head.sha}")
         status[:ended_at]=DateTime.now
         status[:result]=:ok
-        status[:message]="Merge Success"
+        status[:message]="Merge Success: #{@pr.head.sha} onto target branch: #{@pr.base.ref}"
+        status[:output]=merge_result
       rescue StandardError => e
         log.error "Merge Failed"
         log.debug "PR ##{@pr[:number]} END"
@@ -87,10 +88,10 @@ module Thumbs
         message = "OK"
       end
       status[:result] = result
-      status[:message] = message,
-          status[:command] = command,
-          status[:output] = output,
-          status[:exit_code] = $?.exitstatus
+      status[:message] = message
+      status[:command] = command
+      status[:output] = output
+      status[:exit_code] = $?.exitstatus
 
       @build_status[:steps][name.to_sym]=status
       log.debug "[ #{name.upcase} ] [#{result.upcase}] \"#{command}\""
@@ -98,8 +99,8 @@ module Thumbs
     end
 
     def comments
-      o=Octokit::Client.new
-      o.issue_comments(@repo, @pr.number)
+      client = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
+      client.issue_comments(@repo, @pr.number)
     end
 
     def contains_plus_one?(comment_body)
@@ -193,33 +194,14 @@ module Thumbs
       end
 
       begin
-        log.debug("PR ##{@pr.number} Starting merge attempt")
+        log.debug("PR ##{@pr.number} Starting github API merge request")
         client = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
-        commit_message = 'Thumbs Git Robot Merged. Looks good :+1: :+1: !'
-        comment_message=""
-        reviewers_string=reviews.collect{|r| "@#{r[:user][:login]}"  }.join(",")
-        s = ERB.new(<<-BLOCK).result(binding)
-Looks good! :+1:
-Code reviews from: <%= reviewers_string %>.
-Merging and closing this PR.
-Build Status:
-<% @build_status[:steps].each do |step_name, status| %>
-#### <%= step_name %>
-```
-<%= @build_status[:steps][step_name].to_yaml %>
-```
-<% end %>
-        BLOCK
-        add_comment(s)
-#         add_comment <<-EOS
-# Looks good! :+1:
-# 2+ Code reviews from: #{reviews.collect{|r| "@#{r[:user][:login]}"  }.join(",")}
-# Merging and closing this PR.
-# Build Status:
-#
-#         EOS
-        client.merge_pull_request(@repo, @pr.number, commit_message, options = {})
-        add_comment "Merge successfull!"
+        commit_message = 'Thumbs Git Robot Merge. Looks good :+1: :+1: !'
+        comment_message=create_pre_merge_comment
+        merge_response = client.merge_pull_request(@repo, @pr.number, commit_message, options = {})
+        merge_comment="Successfully requested merge for #{@repo} PR##{@pr.number} (#{@pr.head.sha} on to #{@pr.base.ref})\n\n"
+        merge_comment << " ```yaml    \n#{merge_response.to_hash.to_yaml}\n ``` \n"
+        add_comment merge_comment
         log.debug "PR ##{@pr.number} Merge OK"
       rescue StandardError => e
         log_message = "PR ##{@pr.number} Merge FAILED #{e.inspect}"
@@ -251,12 +233,39 @@ Build Status:
       Octokit.pull_request(@repo, @pr.number).state == "open"
     end
     def add_comment(comment)
-      client = Octokit::Client.new
+      client = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
       client.add_comment(@repo, @pr.number, comment, options = {})
     end
     def close
       client = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
       client.close_pull_request(@repo, @pr.number)
+    end
+
+    def create_pre_merge_comment
+      comment = render_pre_merge_comment_template <<-EOS
+<% reviewers=reviews.collect { |r| "@" + r[:user][:login] } %>
+
+## Thumbs Build Status: :+1: Looks good! :+1:
+#### Code reviews from: <%= reviewers.join(", ") %>.
+#### Merging and closing this PR.
+<% @build_status[:steps].each do |step_name, status| %>
+
+#### *<%= step_name.upcase %>*
+
+```yaml
+<%= status.to_yaml %>
+```
+<% end %>
+      EOS
+      add_comment(comment)
+    end
+    private
+
+    def render_pre_merge_comment_template(template)
+      render_template(template)
+    end
+    def render_template(template)
+      ERB.new(template).result(binding)
     end
   end
 end
