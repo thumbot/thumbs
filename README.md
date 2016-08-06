@@ -46,7 +46,7 @@ export GITHUB_PASS=pear
 ```
 
 ### test webhooks 
-##### In a seperate window, start ngrok to collect the forwarding url
+##### In a separate window, start ngrok to collect the forwarding url
 ```
 > ngrok -p 4567
 ```
