@@ -1,9 +1,9 @@
-# Thumbs: A simplified integration robot
- ![alt text](https://ryanbrownhill.github.io/github-collab-pres/img/thumbsup.png "Thumbs")
- 
-## What is this?
+# Thumbs
 
-Thumbs is a simple git integration robot. 
+A simplified integration robot.
+
+![Logo][logo]
+[logo]: https://ryanbrownhill.github.io/github-collab-pres/img/thumbsup.png
 
 ### How does it work ?
 
@@ -15,7 +15,7 @@ Thumbs is a simple git integration robot.
   * Test 'make test'
   * Ensures PR contains a minimum of 2 non author review comments
 * Adds a comment on the PR with the build status
-* After final validations, request an PR merge through github API 
+* After final validations, request a PR merge through github API 
 
 
 ## Installation
@@ -46,7 +46,7 @@ export GITHUB_PASS=pear
 ```
 
 ### test webhooks 
-##### In a seperate window, start ngrok to collect the forwarding url
+##### In a separate window, start ngrok to collect the forwarding url
 ```
 > ngrok -p 4567
 ```
@@ -72,5 +72,8 @@ Forwarding                    http://699f13d5.ngrok.io -> localhost:4567
 > rake start
 
 ```
+Now go to your favorite pull request on github, leave a comment and watch the magic happen.
+
+Example: https://github.com/BashoOps/prtester/pull/19
 
 
