@@ -220,7 +220,7 @@ module Thumbs
           add_slack_message "##{channel}", pre_merge_comment
         end
         merge_response = client.merge_pull_request(@repo, @pr.number, commit_message, options = {})
-        merge_comment="Successfully requested merge for #{@repo} PR##{@pr.number} (#{@pr.head.sha} on to #{@pr.base.ref})\n\n"
+        merge_comment="Successfully merged *#{@repo}/pulls/#{@pr.number}* (*#{@pr.head.sha}* on to *#{@pr.base.ref}*)\n\n"
         merge_comment << " ```yaml    \n#{merge_response.to_hash.to_yaml}\n ``` \n"
 
         add_comment merge_comment
@@ -271,7 +271,7 @@ module Thumbs
       comment = render_pre_merge_comment_template <<-EOS
 <% reviewers=reviews.collect { |r| "@" + r[:user][:login] } %>
 
-## Thumbs Build Status: :+1: Looks good! :+1:
+## Thumbs Build Status for #{@repo}/pulls/#{@pr.number}: :+1: Looks good! :+1:
 #### Code reviews from: <%= reviewers.join(", ") %>.
 #### Merging and closing this PR.
 <% @build_status[:steps].each do |step_name, status| %>
