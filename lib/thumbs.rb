@@ -1,11 +1,27 @@
+require 'sinatra'
+require 'json'
+require 'yaml'
+require 'log4r'
+require 'octokit'
+require 'git'
+require 'erb'
+require 'slack-ruby-client'
+
 module Thumbs
   MINIMUM_REVIEWERS=2
-
+  CONFIGURED_SLACK_CHANNELS=%w[testing]
+ include Log4r
   def self.start_logger
     log = Logger.new 'mylog'
     formatter = PatternFormatter.new(:pattern => "[%l] %d :Thumbs: %1m")
     log.outputters = StdoutOutputter.new("console", :formatter => formatter)
     log.level = Log4r::DEBUG
+  end
+  def self.authenticate_slack
+    Slack.configure do |config|
+      config.token = ENV['SLACK_API_TOKEN']
+      fail 'Missing ENV[SLACK_API_TOKEN]!' unless config.token
+    end
   end
   def self.authenticate_github
     Octokit.configure do |c|
@@ -18,6 +34,7 @@ module Thumbs
   end
 
   class PullRequestWorker
+    include Log4r
     attr_reader :build_dir
     attr_reader :build_status
     attr_reader :repo
@@ -197,11 +214,20 @@ module Thumbs
         log.debug("PR ##{@pr.number} Starting github API merge request")
         client = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
         commit_message = 'Thumbs Git Robot Merge. Looks good :+1: :+1: !'
-        comment_message=create_pre_merge_comment
+        pre_merge_comment=create_pre_merge_comment
+        add_comment pre_merge_comment
+        CONFIGURED_SLACK_CHANNELS.each do |channel|
+          add_slack_message "##{channel}", pre_merge_comment
+        end
         merge_response = client.merge_pull_request(@repo, @pr.number, commit_message, options = {})
         merge_comment="Successfully requested merge for #{@repo} PR##{@pr.number} (#{@pr.head.sha} on to #{@pr.base.ref})\n\n"
         merge_comment << " ```yaml    \n#{merge_response.to_hash.to_yaml}\n ``` \n"
+
         add_comment merge_comment
+        CONFIGURED_SLACK_CHANNELS.each do |channel|
+          add_slack_message("##{channel}", merge_comment)
+        end
+
         log.debug "PR ##{@pr.number} Merge OK"
       rescue StandardError => e
         log_message = "PR ##{@pr.number} Merge FAILED #{e.inspect}"
@@ -257,7 +283,7 @@ module Thumbs
 ```
 <% end %>
       EOS
-      add_comment(comment)
+      comment
     end
     private
 
@@ -266,6 +292,16 @@ module Thumbs
     end
     def render_template(template)
       ERB.new(template).result(binding)
+    end
+    def add_slack_message(channel, message)
+      client = Slack::RealTime::Client.new
+
+      rc = HTTP.post("https://slack.com/api/chat.postMessage", params: {
+          token: ENV['SLACK_API_TOKEN'],
+          channel: channel,
+          text: message,
+          as_user: true
+      })
     end
   end
 end

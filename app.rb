@@ -1,12 +1,3 @@
-require 'sinatra'
-require 'json'
-require 'yaml'
-require 'log4r'
-include Log4r
-require 'octokit'
-require 'git'
-require 'erb'
-
 $:.unshift(File.join(File.dirname(__FILE__), '/lib'))
 require 'thumbs'
 
@@ -14,6 +5,7 @@ Thumbs.start_logger
 Thumbs.authenticate_github
 
 include Thumbs
+include Log4r
 
 get '/' do
   "Hi, nothing to see here"
@@ -21,7 +13,7 @@ end
 
 post '/webhook' do
   payload = JSON.parse(request.body.read)
-  log = Logger['mylog']
+  log = Log4r::Logger['mylog']
   #log.debug("received webhook #{payload.to_yaml}")
 
   unless payload.key?('issue')
