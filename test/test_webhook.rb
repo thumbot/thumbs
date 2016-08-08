@@ -23,6 +23,7 @@ def test_webhook_mergeable_pr
       :repository => { :full_name => test_pr_worker.repo},
       :issue => { :number => test_pr_worker.pr.number }
   }
+
   post '/webhook', sample_payload.to_json
 
   assert last_response.body.include?("OK")
@@ -39,4 +40,12 @@ def test_webhook_mergeable_pr
   assert_false test_pr_worker.open?
 
 end
+  # to test
+
+ #  post minimum payload for initial pull request creation.
+  # when received, it will check the pr and count the comments to determine what stage we're in.
+  # if count == 1, build status has been posted. or use a tag inside comment like build_step:1
+  # if count == 2, build_status has been posted and  reviews have been made and merge request is in progess.
+  # if count == 3, build is finished, merged.
+
 end

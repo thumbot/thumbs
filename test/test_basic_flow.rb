@@ -2,11 +2,52 @@
 $:.unshift(File.join(File.dirname(__FILE__)))
 require 'test_helper'
 
+class HelloWorldTest < Test::Unit::TestCase
+  include Rack::Test::Methods
+  include Thumbs
+  def app
+    Sinatra::Application
+  end
+
+  def test_webhook_mergeable_pr
+    test_pr_worker=create_test_pr("BashoOps/prtester")
+
+    sample_payload = {
+        :repository => { :full_name => test_pr_worker.repo},
+        :issue => { :number => test_pr_worker.pr.number }
+    }
+
+    assert test_pr_worker.comments.length == 0
+    assert test_pr_worker.bot_comments.length == 0
+
+    post '/webhook', sample_payload.to_json
+
+    assert last_response.body.include?("OK")
+
+    assert_true test_pr_worker.open?
+    assert test_pr_worker.reviews.length == 0
+    assert test_pr_worker.comments.length == 1
+    assert test_pr_worker.bot_comments.length == 1
+
+    assert test_pr_worker.comments.first[:body] =~ /Thumbs Build Status/
+
+    create_test_code_reviews(test_pr_worker.repo, test_pr_worker.pr.number)
+
+    assert test_pr_worker.reviews.length >= 2
+    post '/webhook', sample_payload.to_json
+    assert last_response.body.include?("OK")
+
+    assert_false test_pr_worker.open?
+
+  end
+
 
 unit_tests do
 
-  test "can try pr merge" do
-    test_pr_worker=create_test_pr("BashoOps/prtester")
+  test "can flow through stages" do
+
+
+
     create_test_code_reviews(test_pr_worker.repo, test_pr_worker.pr.number)
     assert test_pr_worker.respond_to?(:try_merge)
     status = test_pr_worker.try_merge
@@ -78,7 +119,8 @@ unit_tests do
 
     pr = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
     assert test_pr_worker.respond_to?(:reviews)
-    assert test_pr_worker.bot_comments.length > 0
+    assert test_pr_worker.build_comments.length > 0
+    assert test_pr_worker.build_stage == :BUILD
 
     assert test_pr_worker.build_status[:steps].length == 0
 

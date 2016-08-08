@@ -120,6 +120,10 @@ module Thumbs
       client.issue_comments(@repo, @pr.number)
     end
 
+    def bot_comments
+      comments.collect{|c| c if c[:user][:login] == ENV['GITHUB_USER'] }
+    end
+
     def contains_plus_one?(comment_body)
       comment_body =~ /\+1/
     end

@@ -14,7 +14,7 @@ end
 post '/webhook' do
   payload = JSON.parse(request.body.read)
   log = Log4r::Logger['mylog']
-  #log.debug("received webhook #{payload.to_yaml}")
+  log.debug("received webhook #{payload.to_yaml}")
 
   unless payload.key?('issue')
     log.debug "this is not a comment event, ignoring "
