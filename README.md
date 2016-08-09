@@ -72,7 +72,7 @@ Forwarding                    http://699f13d5.ngrok.io -> localhost:4567
 
 ```
 > rake start
-# Now go to your favorite pull request on github, leave a comment and watch the magic happen.
+# Now create a pull request or leave a comment and watch the magic happen.
 ```
 
 ### Example: https://github.com/BashoOps/prtester/pull/189
