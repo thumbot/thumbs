@@ -5,7 +5,7 @@ require 'test_helper'
 unit_tests do
 
   test "can try pr merge" do
-    test_pr_worker=create_test_pr("BashoOps/prtester")
+    test_pr_worker=create_test_pr("thumbot/prtester")
     create_test_code_reviews(test_pr_worker.repo, test_pr_worker.pr.number)
     assert test_pr_worker.respond_to?(:try_merge)
     status = test_pr_worker.try_merge
@@ -73,7 +73,7 @@ unit_tests do
     test_pr_worker.close
   end
   test "should pr not be merged" do
-    test_pr_worker=create_test_pr("BashoOps/prtester")
+    test_pr_worker=create_test_pr("thumbot/prtester")
 
     pr = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
     assert test_pr_worker.respond_to?(:reviews)
@@ -86,13 +86,13 @@ unit_tests do
   end
 
   test "merge pr" do
-    test_pr_worker=create_test_pr("BashoOps/prtester")
+    test_pr_worker=create_test_pr("thumbot/prtester")
 
     pr_worker = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
     assert pr_worker.reviews.length == 0
 
     assert_false pr_worker.valid_for_merge?
-    create_test_code_reviews("BashoOps/prtester", test_pr_worker.pr.number)
+    create_test_code_reviews("thumbot/prtester", test_pr_worker.pr.number)
 
     assert pr_worker.reviews.length == 2
 
@@ -106,7 +106,7 @@ unit_tests do
 
     assert prw2.kind_of?(Thumbs::PullRequestWorker), prw2.inspect
 
-    assert_equal "BashoOps/prtester", prw2.repo
+    assert_equal "thumbot/prtester", prw2.repo
     assert_false prw2.valid_for_merge?
     assert_false prw2.open?
 
@@ -115,7 +115,7 @@ unit_tests do
   test "add comment" do
     client1 = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
 
-    test_pr_worker = create_test_pr("BashoOps/prtester")
+    test_pr_worker = create_test_pr("thumbot/prtester")
     pr_worker = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
     comments_list = pr_worker.comments
 

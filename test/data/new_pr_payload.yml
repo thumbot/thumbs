@@ -1,32 +1,32 @@
 action: opened
 number: 247
 pull_request:
-  url: https://api.github.com/repos/BashoOps/prtester/pulls/247
+  url: https://api.github.com/repos/thumbot/prtester/pulls/247
   id: 80508745
-  html_url: https://github.com/BashoOps/prtester/pull/247
-  diff_url: https://github.com/BashoOps/prtester/pull/247.diff
-  patch_url: https://github.com/BashoOps/prtester/pull/247.patch
-  issue_url: https://api.github.com/repos/BashoOps/prtester/issues/247
+  html_url: https://github.com/thumbot/prtester/pull/247
+  diff_url: https://github.com/thumbot/prtester/pull/247.diff
+  patch_url: https://github.com/thumbot/prtester/pull/247.patch
+  issue_url: https://api.github.com/repos/thumbot/prtester/issues/247
   number: 247
   state: open
   locked: false
   title: Test4
   user:
-    login: BashoOps
+    login: thumbot
     id: 677773
     avatar_url: https://avatars.githubusercontent.com/u/677773?v=3
     gravatar_id: ''
-    url: https://api.github.com/users/BashoOps
-    html_url: https://github.com/BashoOps
-    followers_url: https://api.github.com/users/BashoOps/followers
-    following_url: https://api.github.com/users/BashoOps/following{/other_user}
-    gists_url: https://api.github.com/users/BashoOps/gists{/gist_id}
-    starred_url: https://api.github.com/users/BashoOps/starred{/owner}{/repo}
-    subscriptions_url: https://api.github.com/users/BashoOps/subscriptions
-    organizations_url: https://api.github.com/users/BashoOps/orgs
-    repos_url: https://api.github.com/users/BashoOps/repos
-    events_url: https://api.github.com/users/BashoOps/events{/privacy}
-    received_events_url: https://api.github.com/users/BashoOps/received_events
+    url: https://api.github.com/users/thumbot
+    html_url: https://github.com/thumbot
+    followers_url: https://api.github.com/users/thumbot/followers
+    following_url: https://api.github.com/users/thumbot/following{/other_user}
+    gists_url: https://api.github.com/users/thumbot/gists{/gist_id}
+    starred_url: https://api.github.com/users/thumbot/starred{/owner}{/repo}
+    subscriptions_url: https://api.github.com/users/thumbot/subscriptions
+    organizations_url: https://api.github.com/users/thumbot/orgs
+    repos_url: https://api.github.com/users/thumbot/repos
+    events_url: https://api.github.com/users/thumbot/events{/privacy}
+    received_events_url: https://api.github.com/users/thumbot/received_events
     type: User
     site_admin: false
   body: ''
@@ -38,103 +38,103 @@ pull_request:
   assignee:
   assignees: []
   milestone:
-  commits_url: https://api.github.com/repos/BashoOps/prtester/pulls/247/commits
-  review_comments_url: https://api.github.com/repos/BashoOps/prtester/pulls/247/comments
-  review_comment_url: https://api.github.com/repos/BashoOps/prtester/pulls/comments{/number}
-  comments_url: https://api.github.com/repos/BashoOps/prtester/issues/247/comments
-  statuses_url: https://api.github.com/repos/BashoOps/prtester/statuses/2d4a774c8719dbe46b3d3249becf9e84825811ca
+  commits_url: https://api.github.com/repos/thumbot/prtester/pulls/247/commits
+  review_comments_url: https://api.github.com/repos/thumbot/prtester/pulls/247/comments
+  review_comment_url: https://api.github.com/repos/thumbot/prtester/pulls/comments{/number}
+  comments_url: https://api.github.com/repos/thumbot/prtester/issues/247/comments
+  statuses_url: https://api.github.com/repos/thumbot/prtester/statuses/2d4a774c8719dbe46b3d3249becf9e84825811ca
   head:
-    label: BashoOps:test4
+    label: thumbot:test4
     ref: test4
     sha: 2d4a774c8719dbe46b3d3249becf9e84825811ca
     user:
-      login: BashoOps
+      login: thumbot
       id: 677773
       avatar_url: https://avatars.githubusercontent.com/u/677773?v=3
       gravatar_id: ''
-      url: https://api.github.com/users/BashoOps
-      html_url: https://github.com/BashoOps
-      followers_url: https://api.github.com/users/BashoOps/followers
-      following_url: https://api.github.com/users/BashoOps/following{/other_user}
-      gists_url: https://api.github.com/users/BashoOps/gists{/gist_id}
-      starred_url: https://api.github.com/users/BashoOps/starred{/owner}{/repo}
-      subscriptions_url: https://api.github.com/users/BashoOps/subscriptions
-      organizations_url: https://api.github.com/users/BashoOps/orgs
-      repos_url: https://api.github.com/users/BashoOps/repos
-      events_url: https://api.github.com/users/BashoOps/events{/privacy}
-      received_events_url: https://api.github.com/users/BashoOps/received_events
+      url: https://api.github.com/users/thumbot
+      html_url: https://github.com/thumbot
+      followers_url: https://api.github.com/users/thumbot/followers
+      following_url: https://api.github.com/users/thumbot/following{/other_user}
+      gists_url: https://api.github.com/users/thumbot/gists{/gist_id}
+      starred_url: https://api.github.com/users/thumbot/starred{/owner}{/repo}
+      subscriptions_url: https://api.github.com/users/thumbot/subscriptions
+      organizations_url: https://api.github.com/users/thumbot/orgs
+      repos_url: https://api.github.com/users/thumbot/repos
+      events_url: https://api.github.com/users/thumbot/events{/privacy}
+      received_events_url: https://api.github.com/users/thumbot/received_events
       type: User
       site_admin: false
     repo:
       id: 65047705
       name: prtester
-      full_name: BashoOps/prtester
+      full_name: thumbot/prtester
       owner:
-        login: BashoOps
+        login: thumbot
         id: 677773
         avatar_url: https://avatars.githubusercontent.com/u/677773?v=3
         gravatar_id: ''
-        url: https://api.github.com/users/BashoOps
-        html_url: https://github.com/BashoOps
-        followers_url: https://api.github.com/users/BashoOps/followers
-        following_url: https://api.github.com/users/BashoOps/following{/other_user}
-        gists_url: https://api.github.com/users/BashoOps/gists{/gist_id}
-        starred_url: https://api.github.com/users/BashoOps/starred{/owner}{/repo}
-        subscriptions_url: https://api.github.com/users/BashoOps/subscriptions
-        organizations_url: https://api.github.com/users/BashoOps/orgs
-        repos_url: https://api.github.com/users/BashoOps/repos
-        events_url: https://api.github.com/users/BashoOps/events{/privacy}
-        received_events_url: https://api.github.com/users/BashoOps/received_events
+        url: https://api.github.com/users/thumbot
+        html_url: https://github.com/thumbot
+        followers_url: https://api.github.com/users/thumbot/followers
+        following_url: https://api.github.com/users/thumbot/following{/other_user}
+        gists_url: https://api.github.com/users/thumbot/gists{/gist_id}
+        starred_url: https://api.github.com/users/thumbot/starred{/owner}{/repo}
+        subscriptions_url: https://api.github.com/users/thumbot/subscriptions
+        organizations_url: https://api.github.com/users/thumbot/orgs
+        repos_url: https://api.github.com/users/thumbot/repos
+        events_url: https://api.github.com/users/thumbot/events{/privacy}
+        received_events_url: https://api.github.com/users/thumbot/received_events
         type: User
         site_admin: false
       private: false
-      html_url: https://github.com/BashoOps/prtester
+      html_url: https://github.com/thumbot/prtester
       description: testing pr
       fork: true
-      url: https://api.github.com/repos/BashoOps/prtester
-      forks_url: https://api.github.com/repos/BashoOps/prtester/forks
-      keys_url: https://api.github.com/repos/BashoOps/prtester/keys{/key_id}
-      collaborators_url: https://api.github.com/repos/BashoOps/prtester/collaborators{/collaborator}
-      teams_url: https://api.github.com/repos/BashoOps/prtester/teams
-      hooks_url: https://api.github.com/repos/BashoOps/prtester/hooks
-      issue_events_url: https://api.github.com/repos/BashoOps/prtester/issues/events{/number}
-      events_url: https://api.github.com/repos/BashoOps/prtester/events
-      assignees_url: https://api.github.com/repos/BashoOps/prtester/assignees{/user}
-      branches_url: https://api.github.com/repos/BashoOps/prtester/branches{/branch}
-      tags_url: https://api.github.com/repos/BashoOps/prtester/tags
-      blobs_url: https://api.github.com/repos/BashoOps/prtester/git/blobs{/sha}
-      git_tags_url: https://api.github.com/repos/BashoOps/prtester/git/tags{/sha}
-      git_refs_url: https://api.github.com/repos/BashoOps/prtester/git/refs{/sha}
-      trees_url: https://api.github.com/repos/BashoOps/prtester/git/trees{/sha}
-      statuses_url: https://api.github.com/repos/BashoOps/prtester/statuses/{sha}
-      languages_url: https://api.github.com/repos/BashoOps/prtester/languages
-      stargazers_url: https://api.github.com/repos/BashoOps/prtester/stargazers
-      contributors_url: https://api.github.com/repos/BashoOps/prtester/contributors
-      subscribers_url: https://api.github.com/repos/BashoOps/prtester/subscribers
-      subscription_url: https://api.github.com/repos/BashoOps/prtester/subscription
-      commits_url: https://api.github.com/repos/BashoOps/prtester/commits{/sha}
-      git_commits_url: https://api.github.com/repos/BashoOps/prtester/git/commits{/sha}
-      comments_url: https://api.github.com/repos/BashoOps/prtester/comments{/number}
-      issue_comment_url: https://api.github.com/repos/BashoOps/prtester/issues/comments{/number}
-      contents_url: https://api.github.com/repos/BashoOps/prtester/contents/{+path}
-      compare_url: https://api.github.com/repos/BashoOps/prtester/compare/{base}...{head}
-      merges_url: https://api.github.com/repos/BashoOps/prtester/merges
-      archive_url: https://api.github.com/repos/BashoOps/prtester/{archive_format}{/ref}
-      downloads_url: https://api.github.com/repos/BashoOps/prtester/downloads
-      issues_url: https://api.github.com/repos/BashoOps/prtester/issues{/number}
-      pulls_url: https://api.github.com/repos/BashoOps/prtester/pulls{/number}
-      milestones_url: https://api.github.com/repos/BashoOps/prtester/milestones{/number}
-      notifications_url: https://api.github.com/repos/BashoOps/prtester/notifications{?since,all,participating}
-      labels_url: https://api.github.com/repos/BashoOps/prtester/labels{/name}
-      releases_url: https://api.github.com/repos/BashoOps/prtester/releases{/id}
-      deployments_url: https://api.github.com/repos/BashoOps/prtester/deployments
+      url: https://api.github.com/repos/thumbot/prtester
+      forks_url: https://api.github.com/repos/thumbot/prtester/forks
+      keys_url: https://api.github.com/repos/thumbot/prtester/keys{/key_id}
+      collaborators_url: https://api.github.com/repos/thumbot/prtester/collaborators{/collaborator}
+      teams_url: https://api.github.com/repos/thumbot/prtester/teams
+      hooks_url: https://api.github.com/repos/thumbot/prtester/hooks
+      issue_events_url: https://api.github.com/repos/thumbot/prtester/issues/events{/number}
+      events_url: https://api.github.com/repos/thumbot/prtester/events
+      assignees_url: https://api.github.com/repos/thumbot/prtester/assignees{/user}
+      branches_url: https://api.github.com/repos/thumbot/prtester/branches{/branch}
+      tags_url: https://api.github.com/repos/thumbot/prtester/tags
+      blobs_url: https://api.github.com/repos/thumbot/prtester/git/blobs{/sha}
+      git_tags_url: https://api.github.com/repos/thumbot/prtester/git/tags{/sha}
+      git_refs_url: https://api.github.com/repos/thumbot/prtester/git/refs{/sha}
+      trees_url: https://api.github.com/repos/thumbot/prtester/git/trees{/sha}
+      statuses_url: https://api.github.com/repos/thumbot/prtester/statuses/{sha}
+      languages_url: https://api.github.com/repos/thumbot/prtester/languages
+      stargazers_url: https://api.github.com/repos/thumbot/prtester/stargazers
+      contributors_url: https://api.github.com/repos/thumbot/prtester/contributors
+      subscribers_url: https://api.github.com/repos/thumbot/prtester/subscribers
+      subscription_url: https://api.github.com/repos/thumbot/prtester/subscription
+      commits_url: https://api.github.com/repos/thumbot/prtester/commits{/sha}
+      git_commits_url: https://api.github.com/repos/thumbot/prtester/git/commits{/sha}
+      comments_url: https://api.github.com/repos/thumbot/prtester/comments{/number}
+      issue_comment_url: https://api.github.com/repos/thumbot/prtester/issues/comments{/number}
+      contents_url: https://api.github.com/repos/thumbot/prtester/contents/{+path}
+      compare_url: https://api.github.com/repos/thumbot/prtester/compare/{base}...{head}
+      merges_url: https://api.github.com/repos/thumbot/prtester/merges
+      archive_url: https://api.github.com/repos/thumbot/prtester/{archive_format}{/ref}
+      downloads_url: https://api.github.com/repos/thumbot/prtester/downloads
+      issues_url: https://api.github.com/repos/thumbot/prtester/issues{/number}
+      pulls_url: https://api.github.com/repos/thumbot/prtester/pulls{/number}
+      milestones_url: https://api.github.com/repos/thumbot/prtester/milestones{/number}
+      notifications_url: https://api.github.com/repos/thumbot/prtester/notifications{?since,all,participating}
+      labels_url: https://api.github.com/repos/thumbot/prtester/labels{/name}
+      releases_url: https://api.github.com/repos/thumbot/prtester/releases{/id}
+      deployments_url: https://api.github.com/repos/thumbot/prtester/deployments
       created_at: '2016-08-05T20:41:05Z'
       updated_at: '2016-08-05T20:41:07Z'
       pushed_at: '2016-08-08T19:38:18Z'
-      git_url: git://github.com/BashoOps/prtester.git
-      ssh_url: git@github.com:BashoOps/prtester.git
-      clone_url: https://github.com/BashoOps/prtester.git
-      svn_url: https://github.com/BashoOps/prtester
+      git_url: git://github.com/thumbot/prtester.git
+      ssh_url: git@github.com:thumbot/prtester.git
+      clone_url: https://github.com/thumbot/prtester.git
+      svn_url: https://github.com/thumbot/prtester
       homepage:
       size: 154
       stargazers_count: 0
@@ -152,97 +152,97 @@ pull_request:
       watchers: 0
       default_branch: master
   base:
-    label: BashoOps:master
+    label: thumbot:master
     ref: master
     sha: cee21d9281343c724e91fdcea61f7c79e974df56
     user:
-      login: BashoOps
+      login: thumbot
       id: 677773
       avatar_url: https://avatars.githubusercontent.com/u/677773?v=3
       gravatar_id: ''
-      url: https://api.github.com/users/BashoOps
-      html_url: https://github.com/BashoOps
-      followers_url: https://api.github.com/users/BashoOps/followers
-      following_url: https://api.github.com/users/BashoOps/following{/other_user}
-      gists_url: https://api.github.com/users/BashoOps/gists{/gist_id}
-      starred_url: https://api.github.com/users/BashoOps/starred{/owner}{/repo}
-      subscriptions_url: https://api.github.com/users/BashoOps/subscriptions
-      organizations_url: https://api.github.com/users/BashoOps/orgs
-      repos_url: https://api.github.com/users/BashoOps/repos
-      events_url: https://api.github.com/users/BashoOps/events{/privacy}
-      received_events_url: https://api.github.com/users/BashoOps/received_events
+      url: https://api.github.com/users/thumbot
+      html_url: https://github.com/thumbot
+      followers_url: https://api.github.com/users/thumbot/followers
+      following_url: https://api.github.com/users/thumbot/following{/other_user}
+      gists_url: https://api.github.com/users/thumbot/gists{/gist_id}
+      starred_url: https://api.github.com/users/thumbot/starred{/owner}{/repo}
+      subscriptions_url: https://api.github.com/users/thumbot/subscriptions
+      organizations_url: https://api.github.com/users/thumbot/orgs
+      repos_url: https://api.github.com/users/thumbot/repos
+      events_url: https://api.github.com/users/thumbot/events{/privacy}
+      received_events_url: https://api.github.com/users/thumbot/received_events
       type: User
       site_admin: false
     repo:
       id: 65047705
       name: prtester
-      full_name: BashoOps/prtester
+      full_name: thumbot/prtester
       owner:
-        login: BashoOps
+        login: thumbot
         id: 677773
         avatar_url: https://avatars.githubusercontent.com/u/677773?v=3
         gravatar_id: ''
-        url: https://api.github.com/users/BashoOps
-        html_url: https://github.com/BashoOps
-        followers_url: https://api.github.com/users/BashoOps/followers
-        following_url: https://api.github.com/users/BashoOps/following{/other_user}
-        gists_url: https://api.github.com/users/BashoOps/gists{/gist_id}
-        starred_url: https://api.github.com/users/BashoOps/starred{/owner}{/repo}
-        subscriptions_url: https://api.github.com/users/BashoOps/subscriptions
-        organizations_url: https://api.github.com/users/BashoOps/orgs
-        repos_url: https://api.github.com/users/BashoOps/repos
-        events_url: https://api.github.com/users/BashoOps/events{/privacy}
-        received_events_url: https://api.github.com/users/BashoOps/received_events
+        url: https://api.github.com/users/thumbot
+        html_url: https://github.com/thumbot
+        followers_url: https://api.github.com/users/thumbot/followers
+        following_url: https://api.github.com/users/thumbot/following{/other_user}
+        gists_url: https://api.github.com/users/thumbot/gists{/gist_id}
+        starred_url: https://api.github.com/users/thumbot/starred{/owner}{/repo}
+        subscriptions_url: https://api.github.com/users/thumbot/subscriptions
+        organizations_url: https://api.github.com/users/thumbot/orgs
+        repos_url: https://api.github.com/users/thumbot/repos
+        events_url: https://api.github.com/users/thumbot/events{/privacy}
+        received_events_url: https://api.github.com/users/thumbot/received_events
         type: User
         site_admin: false
       private: false
-      html_url: https://github.com/BashoOps/prtester
+      html_url: https://github.com/thumbot/prtester
       description: testing pr
       fork: true
-      url: https://api.github.com/repos/BashoOps/prtester
-      forks_url: https://api.github.com/repos/BashoOps/prtester/forks
-      keys_url: https://api.github.com/repos/BashoOps/prtester/keys{/key_id}
-      collaborators_url: https://api.github.com/repos/BashoOps/prtester/collaborators{/collaborator}
-      teams_url: https://api.github.com/repos/BashoOps/prtester/teams
-      hooks_url: https://api.github.com/repos/BashoOps/prtester/hooks
-      issue_events_url: https://api.github.com/repos/BashoOps/prtester/issues/events{/number}
-      events_url: https://api.github.com/repos/BashoOps/prtester/events
-      assignees_url: https://api.github.com/repos/BashoOps/prtester/assignees{/user}
-      branches_url: https://api.github.com/repos/BashoOps/prtester/branches{/branch}
-      tags_url: https://api.github.com/repos/BashoOps/prtester/tags
-      blobs_url: https://api.github.com/repos/BashoOps/prtester/git/blobs{/sha}
-      git_tags_url: https://api.github.com/repos/BashoOps/prtester/git/tags{/sha}
-      git_refs_url: https://api.github.com/repos/BashoOps/prtester/git/refs{/sha}
-      trees_url: https://api.github.com/repos/BashoOps/prtester/git/trees{/sha}
-      statuses_url: https://api.github.com/repos/BashoOps/prtester/statuses/{sha}
-      languages_url: https://api.github.com/repos/BashoOps/prtester/languages
-      stargazers_url: https://api.github.com/repos/BashoOps/prtester/stargazers
-      contributors_url: https://api.github.com/repos/BashoOps/prtester/contributors
-      subscribers_url: https://api.github.com/repos/BashoOps/prtester/subscribers
-      subscription_url: https://api.github.com/repos/BashoOps/prtester/subscription
-      commits_url: https://api.github.com/repos/BashoOps/prtester/commits{/sha}
-      git_commits_url: https://api.github.com/repos/BashoOps/prtester/git/commits{/sha}
-      comments_url: https://api.github.com/repos/BashoOps/prtester/comments{/number}
-      issue_comment_url: https://api.github.com/repos/BashoOps/prtester/issues/comments{/number}
-      contents_url: https://api.github.com/repos/BashoOps/prtester/contents/{+path}
-      compare_url: https://api.github.com/repos/BashoOps/prtester/compare/{base}...{head}
-      merges_url: https://api.github.com/repos/BashoOps/prtester/merges
-      archive_url: https://api.github.com/repos/BashoOps/prtester/{archive_format}{/ref}
-      downloads_url: https://api.github.com/repos/BashoOps/prtester/downloads
-      issues_url: https://api.github.com/repos/BashoOps/prtester/issues{/number}
-      pulls_url: https://api.github.com/repos/BashoOps/prtester/pulls{/number}
-      milestones_url: https://api.github.com/repos/BashoOps/prtester/milestones{/number}
-      notifications_url: https://api.github.com/repos/BashoOps/prtester/notifications{?since,all,participating}
-      labels_url: https://api.github.com/repos/BashoOps/prtester/labels{/name}
-      releases_url: https://api.github.com/repos/BashoOps/prtester/releases{/id}
-      deployments_url: https://api.github.com/repos/BashoOps/prtester/deployments
+      url: https://api.github.com/repos/thumbot/prtester
+      forks_url: https://api.github.com/repos/thumbot/prtester/forks
+      keys_url: https://api.github.com/repos/thumbot/prtester/keys{/key_id}
+      collaborators_url: https://api.github.com/repos/thumbot/prtester/collaborators{/collaborator}
+      teams_url: https://api.github.com/repos/thumbot/prtester/teams
+      hooks_url: https://api.github.com/repos/thumbot/prtester/hooks
+      issue_events_url: https://api.github.com/repos/thumbot/prtester/issues/events{/number}
+      events_url: https://api.github.com/repos/thumbot/prtester/events
+      assignees_url: https://api.github.com/repos/thumbot/prtester/assignees{/user}
+      branches_url: https://api.github.com/repos/thumbot/prtester/branches{/branch}
+      tags_url: https://api.github.com/repos/thumbot/prtester/tags
+      blobs_url: https://api.github.com/repos/thumbot/prtester/git/blobs{/sha}
+      git_tags_url: https://api.github.com/repos/thumbot/prtester/git/tags{/sha}
+      git_refs_url: https://api.github.com/repos/thumbot/prtester/git/refs{/sha}
+      trees_url: https://api.github.com/repos/thumbot/prtester/git/trees{/sha}
+      statuses_url: https://api.github.com/repos/thumbot/prtester/statuses/{sha}
+      languages_url: https://api.github.com/repos/thumbot/prtester/languages
+      stargazers_url: https://api.github.com/repos/thumbot/prtester/stargazers
+      contributors_url: https://api.github.com/repos/thumbot/prtester/contributors
+      subscribers_url: https://api.github.com/repos/thumbot/prtester/subscribers
+      subscription_url: https://api.github.com/repos/thumbot/prtester/subscription
+      commits_url: https://api.github.com/repos/thumbot/prtester/commits{/sha}
+      git_commits_url: https://api.github.com/repos/thumbot/prtester/git/commits{/sha}
+      comments_url: https://api.github.com/repos/thumbot/prtester/comments{/number}
+      issue_comment_url: https://api.github.com/repos/thumbot/prtester/issues/comments{/number}
+      contents_url: https://api.github.com/repos/thumbot/prtester/contents/{+path}
+      compare_url: https://api.github.com/repos/thumbot/prtester/compare/{base}...{head}
+      merges_url: https://api.github.com/repos/thumbot/prtester/merges
+      archive_url: https://api.github.com/repos/thumbot/prtester/{archive_format}{/ref}
+      downloads_url: https://api.github.com/repos/thumbot/prtester/downloads
+      issues_url: https://api.github.com/repos/thumbot/prtester/issues{/number}
+      pulls_url: https://api.github.com/repos/thumbot/prtester/pulls{/number}
+      milestones_url: https://api.github.com/repos/thumbot/prtester/milestones{/number}
+      notifications_url: https://api.github.com/repos/thumbot/prtester/notifications{?since,all,participating}
+      labels_url: https://api.github.com/repos/thumbot/prtester/labels{/name}
+      releases_url: https://api.github.com/repos/thumbot/prtester/releases{/id}
+      deployments_url: https://api.github.com/repos/thumbot/prtester/deployments
       created_at: '2016-08-05T20:41:05Z'
       updated_at: '2016-08-05T20:41:07Z'
       pushed_at: '2016-08-08T19:38:18Z'
-      git_url: git://github.com/BashoOps/prtester.git
-      ssh_url: git@github.com:BashoOps/prtester.git
-      clone_url: https://github.com/BashoOps/prtester.git
-      svn_url: https://github.com/BashoOps/prtester
+      git_url: git://github.com/thumbot/prtester.git
+      ssh_url: git@github.com:thumbot/prtester.git
+      clone_url: https://github.com/thumbot/prtester.git
+      svn_url: https://github.com/thumbot/prtester
       homepage:
       size: 154
       stargazers_count: 0
@@ -261,21 +261,21 @@ pull_request:
       default_branch: master
   _links:
     self:
-      href: https://api.github.com/repos/BashoOps/prtester/pulls/247
+      href: https://api.github.com/repos/thumbot/prtester/pulls/247
     html:
-      href: https://github.com/BashoOps/prtester/pull/247
+      href: https://github.com/thumbot/prtester/pull/247
     issue:
-      href: https://api.github.com/repos/BashoOps/prtester/issues/247
+      href: https://api.github.com/repos/thumbot/prtester/issues/247
     comments:
-      href: https://api.github.com/repos/BashoOps/prtester/issues/247/comments
+      href: https://api.github.com/repos/thumbot/prtester/issues/247/comments
     review_comments:
-      href: https://api.github.com/repos/BashoOps/prtester/pulls/247/comments
+      href: https://api.github.com/repos/thumbot/prtester/pulls/247/comments
     review_comment:
-      href: https://api.github.com/repos/BashoOps/prtester/pulls/comments{/number}
+      href: https://api.github.com/repos/thumbot/prtester/pulls/comments{/number}
     commits:
-      href: https://api.github.com/repos/BashoOps/prtester/pulls/247/commits
+      href: https://api.github.com/repos/thumbot/prtester/pulls/247/commits
     statuses:
-      href: https://api.github.com/repos/BashoOps/prtester/statuses/2d4a774c8719dbe46b3d3249becf9e84825811ca
+      href: https://api.github.com/repos/thumbot/prtester/statuses/2d4a774c8719dbe46b3d3249becf9e84825811ca
   merged: false
   mergeable:
   mergeable_state: unknown
@@ -289,73 +289,73 @@ pull_request:
 repository:
   id: 65047705
   name: prtester
-  full_name: BashoOps/prtester
+  full_name: thumbot/prtester
   owner:
-    login: BashoOps
+    login: thumbot
     id: 677773
     avatar_url: https://avatars.githubusercontent.com/u/677773?v=3
     gravatar_id: ''
-    url: https://api.github.com/users/BashoOps
-    html_url: https://github.com/BashoOps
-    followers_url: https://api.github.com/users/BashoOps/followers
-    following_url: https://api.github.com/users/BashoOps/following{/other_user}
-    gists_url: https://api.github.com/users/BashoOps/gists{/gist_id}
-    starred_url: https://api.github.com/users/BashoOps/starred{/owner}{/repo}
-    subscriptions_url: https://api.github.com/users/BashoOps/subscriptions
-    organizations_url: https://api.github.com/users/BashoOps/orgs
-    repos_url: https://api.github.com/users/BashoOps/repos
-    events_url: https://api.github.com/users/BashoOps/events{/privacy}
-    received_events_url: https://api.github.com/users/BashoOps/received_events
+    url: https://api.github.com/users/thumbot
+    html_url: https://github.com/thumbot
+    followers_url: https://api.github.com/users/thumbot/followers
+    following_url: https://api.github.com/users/thumbot/following{/other_user}
+    gists_url: https://api.github.com/users/thumbot/gists{/gist_id}
+    starred_url: https://api.github.com/users/thumbot/starred{/owner}{/repo}
+    subscriptions_url: https://api.github.com/users/thumbot/subscriptions
+    organizations_url: https://api.github.com/users/thumbot/orgs
+    repos_url: https://api.github.com/users/thumbot/repos
+    events_url: https://api.github.com/users/thumbot/events{/privacy}
+    received_events_url: https://api.github.com/users/thumbot/received_events
     type: User
     site_admin: false
   private: false
-  html_url: https://github.com/BashoOps/prtester
+  html_url: https://github.com/thumbot/prtester
   description: testing pr
   fork: true
-  url: https://api.github.com/repos/BashoOps/prtester
-  forks_url: https://api.github.com/repos/BashoOps/prtester/forks
-  keys_url: https://api.github.com/repos/BashoOps/prtester/keys{/key_id}
-  collaborators_url: https://api.github.com/repos/BashoOps/prtester/collaborators{/collaborator}
-  teams_url: https://api.github.com/repos/BashoOps/prtester/teams
-  hooks_url: https://api.github.com/repos/BashoOps/prtester/hooks
-  issue_events_url: https://api.github.com/repos/BashoOps/prtester/issues/events{/number}
-  events_url: https://api.github.com/repos/BashoOps/prtester/events
-  assignees_url: https://api.github.com/repos/BashoOps/prtester/assignees{/user}
-  branches_url: https://api.github.com/repos/BashoOps/prtester/branches{/branch}
-  tags_url: https://api.github.com/repos/BashoOps/prtester/tags
-  blobs_url: https://api.github.com/repos/BashoOps/prtester/git/blobs{/sha}
-  git_tags_url: https://api.github.com/repos/BashoOps/prtester/git/tags{/sha}
-  git_refs_url: https://api.github.com/repos/BashoOps/prtester/git/refs{/sha}
-  trees_url: https://api.github.com/repos/BashoOps/prtester/git/trees{/sha}
-  statuses_url: https://api.github.com/repos/BashoOps/prtester/statuses/{sha}
-  languages_url: https://api.github.com/repos/BashoOps/prtester/languages
-  stargazers_url: https://api.github.com/repos/BashoOps/prtester/stargazers
-  contributors_url: https://api.github.com/repos/BashoOps/prtester/contributors
-  subscribers_url: https://api.github.com/repos/BashoOps/prtester/subscribers
-  subscription_url: https://api.github.com/repos/BashoOps/prtester/subscription
-  commits_url: https://api.github.com/repos/BashoOps/prtester/commits{/sha}
-  git_commits_url: https://api.github.com/repos/BashoOps/prtester/git/commits{/sha}
-  comments_url: https://api.github.com/repos/BashoOps/prtester/comments{/number}
-  issue_comment_url: https://api.github.com/repos/BashoOps/prtester/issues/comments{/number}
-  contents_url: https://api.github.com/repos/BashoOps/prtester/contents/{+path}
-  compare_url: https://api.github.com/repos/BashoOps/prtester/compare/{base}...{head}
-  merges_url: https://api.github.com/repos/BashoOps/prtester/merges
-  archive_url: https://api.github.com/repos/BashoOps/prtester/{archive_format}{/ref}
-  downloads_url: https://api.github.com/repos/BashoOps/prtester/downloads
-  issues_url: https://api.github.com/repos/BashoOps/prtester/issues{/number}
-  pulls_url: https://api.github.com/repos/BashoOps/prtester/pulls{/number}
-  milestones_url: https://api.github.com/repos/BashoOps/prtester/milestones{/number}
-  notifications_url: https://api.github.com/repos/BashoOps/prtester/notifications{?since,all,participating}
-  labels_url: https://api.github.com/repos/BashoOps/prtester/labels{/name}
-  releases_url: https://api.github.com/repos/BashoOps/prtester/releases{/id}
-  deployments_url: https://api.github.com/repos/BashoOps/prtester/deployments
+  url: https://api.github.com/repos/thumbot/prtester
+  forks_url: https://api.github.com/repos/thumbot/prtester/forks
+  keys_url: https://api.github.com/repos/thumbot/prtester/keys{/key_id}
+  collaborators_url: https://api.github.com/repos/thumbot/prtester/collaborators{/collaborator}
+  teams_url: https://api.github.com/repos/thumbot/prtester/teams
+  hooks_url: https://api.github.com/repos/thumbot/prtester/hooks
+  issue_events_url: https://api.github.com/repos/thumbot/prtester/issues/events{/number}
+  events_url: https://api.github.com/repos/thumbot/prtester/events
+  assignees_url: https://api.github.com/repos/thumbot/prtester/assignees{/user}
+  branches_url: https://api.github.com/repos/thumbot/prtester/branches{/branch}
+  tags_url: https://api.github.com/repos/thumbot/prtester/tags
+  blobs_url: https://api.github.com/repos/thumbot/prtester/git/blobs{/sha}
+  git_tags_url: https://api.github.com/repos/thumbot/prtester/git/tags{/sha}
+  git_refs_url: https://api.github.com/repos/thumbot/prtester/git/refs{/sha}
+  trees_url: https://api.github.com/repos/thumbot/prtester/git/trees{/sha}
+  statuses_url: https://api.github.com/repos/thumbot/prtester/statuses/{sha}
+  languages_url: https://api.github.com/repos/thumbot/prtester/languages
+  stargazers_url: https://api.github.com/repos/thumbot/prtester/stargazers
+  contributors_url: https://api.github.com/repos/thumbot/prtester/contributors
+  subscribers_url: https://api.github.com/repos/thumbot/prtester/subscribers
+  subscription_url: https://api.github.com/repos/thumbot/prtester/subscription
+  commits_url: https://api.github.com/repos/thumbot/prtester/commits{/sha}
+  git_commits_url: https://api.github.com/repos/thumbot/prtester/git/commits{/sha}
+  comments_url: https://api.github.com/repos/thumbot/prtester/comments{/number}
+  issue_comment_url: https://api.github.com/repos/thumbot/prtester/issues/comments{/number}
+  contents_url: https://api.github.com/repos/thumbot/prtester/contents/{+path}
+  compare_url: https://api.github.com/repos/thumbot/prtester/compare/{base}...{head}
+  merges_url: https://api.github.com/repos/thumbot/prtester/merges
+  archive_url: https://api.github.com/repos/thumbot/prtester/{archive_format}{/ref}
+  downloads_url: https://api.github.com/repos/thumbot/prtester/downloads
+  issues_url: https://api.github.com/repos/thumbot/prtester/issues{/number}
+  pulls_url: https://api.github.com/repos/thumbot/prtester/pulls{/number}
+  milestones_url: https://api.github.com/repos/thumbot/prtester/milestones{/number}
+  notifications_url: https://api.github.com/repos/thumbot/prtester/notifications{?since,all,participating}
+  labels_url: https://api.github.com/repos/thumbot/prtester/labels{/name}
+  releases_url: https://api.github.com/repos/thumbot/prtester/releases{/id}
+  deployments_url: https://api.github.com/repos/thumbot/prtester/deployments
   created_at: '2016-08-05T20:41:05Z'
   updated_at: '2016-08-05T20:41:07Z'
   pushed_at: '2016-08-08T19:38:18Z'
-  git_url: git://github.com/BashoOps/prtester.git
-  ssh_url: git@github.com:BashoOps/prtester.git
-  clone_url: https://github.com/BashoOps/prtester.git
-  svn_url: https://github.com/BashoOps/prtester
+  git_url: git://github.com/thumbot/prtester.git
+  ssh_url: git@github.com:thumbot/prtester.git
+  clone_url: https://github.com/thumbot/prtester.git
+  svn_url: https://github.com/thumbot/prtester
   homepage:
   size: 154
   stargazers_count: 0
@@ -373,20 +373,20 @@ repository:
   watchers: 0
   default_branch: master
 sender:
-  login: BashoOps
+  login: thumbot
   id: 677773
   avatar_url: https://avatars.githubusercontent.com/u/677773?v=3
   gravatar_id: ''
-  url: https://api.github.com/users/BashoOps
-  html_url: https://github.com/BashoOps
-  followers_url: https://api.github.com/users/BashoOps/followers
-  following_url: https://api.github.com/users/BashoOps/following{/other_user}
-  gists_url: https://api.github.com/users/BashoOps/gists{/gist_id}
-  starred_url: https://api.github.com/users/BashoOps/starred{/owner}{/repo}
-  subscriptions_url: https://api.github.com/users/BashoOps/subscriptions
-  organizations_url: https://api.github.com/users/BashoOps/orgs
-  repos_url: https://api.github.com/users/BashoOps/repos
-  events_url: https://api.github.com/users/BashoOps/events{/privacy}
-  received_events_url: https://api.github.com/users/BashoOps/received_events
+  url: https://api.github.com/users/thumbot
+  html_url: https://github.com/thumbot
+  followers_url: https://api.github.com/users/thumbot/followers
+  following_url: https://api.github.com/users/thumbot/following{/other_user}
+  gists_url: https://api.github.com/users/thumbot/gists{/gist_id}
+  starred_url: https://api.github.com/users/thumbot/starred{/owner}{/repo}
+  subscriptions_url: https://api.github.com/users/thumbot/subscriptions
+  organizations_url: https://api.github.com/users/thumbot/orgs
+  repos_url: https://api.github.com/users/thumbot/repos
+  events_url: https://api.github.com/users/thumbot/events{/privacy}
+  received_events_url: https://api.github.com/users/thumbot/received_events
   type: User
   site_admin: false

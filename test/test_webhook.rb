@@ -7,7 +7,7 @@ class HelloWorldTest < Test::Unit::TestCase
   end
 
   def test_webhook_mergeable_pr_test
-    test_pr_worker = create_test_pr("BashoOps/prtester")
+    test_pr_worker = create_test_pr("thumbot/prtester")
 
     assert test_pr_worker.comments.length == 0
     assert test_pr_worker.reviews.length == 0
