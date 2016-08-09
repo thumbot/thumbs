@@ -34,11 +34,11 @@ For testing
 export GITHUB_USER=ted
 export GITHUB_PASS=pear
 
-export GITHUB_USER=ted
-export GITHUB_PASS=pear
+export GITHUB_USER1=ted
+export GITHUB_PASS1=pear
 
-export GITHUB_USER1=bob
-export GITHUB_PASS1=apple
+export GITHUB_USER2=bob
+export GITHUB_PASS2=apple
 ```
 ### production
 For normal operation, only a single set of github credentials is needed.
