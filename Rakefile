@@ -5,6 +5,6 @@ task :test do
 end
 
 task :start do
- ruby "./app.rb -p 4567"
+  ruby "./app.rb -p 4567"
 end
 

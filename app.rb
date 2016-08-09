@@ -1,42 +1,46 @@
 $:.unshift(File.join(File.dirname(__FILE__), '/lib'))
+
 require 'thumbs'
+require 'sinatra/base'
+require 'json'
 
-Thumbs.start_logger
-Thumbs.authenticate_github
+class ThumbsWeb < Sinatra::Base
+  helpers Sinatra::GeneralHelpers
+  helpers Sinatra::WebhookHelpers
 
-include Thumbs
-include Log4r
+  post '/webhook' do
+    start_logger
 
-get '/' do
-  "Hi, nothing to see here"
+    payload = JSON.parse(request.body.read)
+    log = Log4r::Logger['mylog']
+    log.debug("received webhook #{payload.to_yaml}")
+
+    case payload_type(payload)
+      when :new_pr
+        repo, pr = process_payload(payload)
+        log.debug "got repo #{repo} and pr #{pr}"
+        pr_worker = Thumbs::PullRequestWorker.new(:repo=>repo,:pr=>pr)
+        log.debug("new pull request #{pr_worker.repo}/pulls/#{pr_worker.pr.number} ")
+        pr_worker.validate
+        pr_worker.create_build_status_comment
+      when :new_comment
+        repo, pr = process_payload(payload)
+        log.debug "got repo #{repo} and pr #{pr}"
+        pr_worker = Thumbs::PullRequestWorker.new(:repo=>repo,:pr=>pr)
+        log.debug("new comment #{pr_worker.repo}/pulls/#{pr_worker.pr.number} #{payload['comment']['body']}")
+        pr_worker.validate
+        if pr_worker.valid_for_merge?
+          log.debug("new comment #{pr_worker.repo}/pulls/#{pr_worker.pr.number} valid_for_merge? OK ")
+          pr_worker.create_reviewers_comment
+          pr_worker.merge
+        else
+          log.debug("new comment #{pr_worker.repo}/pulls/#{pr_worker.pr.number} valid_for_merge? returned False")
+          print pr_worker.build_status.to_yaml
+        end
+      when :unregistered
+        log.debug "This is not an event I recognize(new_pr, new_comment): ignoring"
+    end
+    "OK"
+  end
 end
 
-post '/webhook' do
-  payload = JSON.parse(request.body.read)
-  log = Log4r::Logger['mylog']
-  log.debug("received webhook #{payload.to_yaml}")
-
-  unless payload.key?('issue')
-    log.debug "this is not a comment event, ignoring "
-    return "OK"
-  end
-  repo, pr_number = process_payload(payload)
-  pr_worker=PullRequestWorker.new(:repo=>repo,:pr=>pr_number)
-
-
-  pr_worker.cleanup_build_dir &&
-  pr_worker.clone() &&
-  pr_worker.try_merge &&
-  pr_worker.try_run_build_step("build", "make build") &&
-  pr_worker.try_run_build_step("test", "make test")
-
-  if pr_worker.valid_for_merge?
-
-    pr_worker.merge
-  else
-    log.debug "received webhook but unable to merge pr_worker.valid_for_merge? False"
-    log.debug pr_worker.build_status
-  end
-  #log.debug pr_worker.build_status.to_yaml
-  "OK"
-end

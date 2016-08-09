@@ -6,7 +6,7 @@ require 'test/unit'
 require 'rack/test'
 require 'dust'
 
-COMMENT_PAYLOAD = YAML.load(IO.read(File.join( File.expand_path(File.dirname('__FILE__'), './test/data/new_comment_payload.yml'))))
+COMMENT_PAYLOAD = YAML.load(IO.read(File.join(File.expand_path(File.dirname('__FILE__'), './test/data/new_comment_payload.yml'))))
 
 def create_test_pr(repo_name)
   # prep test data
@@ -29,7 +29,7 @@ def create_test_pr(repo_name)
   system("cd #{test_dir} && git push -q origin #{pr_branch}")
   client1 = Octokit::Client.new(:login => ENV['GITHUB_USER'], :password => ENV['GITHUB_PASS'])
   pr = client1.create_pull_request(repo_name, "master", pr_branch, "Testing PR", "Thumbs Git Robot: This pr has been created for testing purposes")
-  prw=Thumbs::PullRequestWorker.new(:repo=>repo_name, :pr=>pr.number)
+  prw=Thumbs::PullRequestWorker.new(:repo => repo_name, :pr => pr.number)
 
   prw
 end

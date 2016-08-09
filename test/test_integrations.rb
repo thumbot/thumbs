@@ -1,4 +1,3 @@
-
 $:.unshift(File.join(File.dirname(__FILE__)))
 require 'test_helper'
 
@@ -73,14 +72,13 @@ unit_tests do
     assert status[:result]==:ok
     test_pr_worker.close
   end
-  test "should pr be merged" do
+  test "should pr not be merged" do
     test_pr_worker=create_test_pr("BashoOps/prtester")
 
     pr = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
     assert test_pr_worker.respond_to?(:reviews)
-    assert test_pr_worker.bot_comments.length > 0
 
-    assert test_pr_worker.build_status[:steps].length == 0
+    assert test_pr_worker.reviews.length == 0
 
     assert test_pr_worker.respond_to?(:valid_for_merge?)
     assert_false test_pr_worker.valid_for_merge?
@@ -98,17 +96,12 @@ unit_tests do
 
     assert pr_worker.reviews.length == 2
 
-    pr_worker.cleanup_build_dir &&
-    pr_worker.clone &&
-    pr_worker.try_merge &&
-    pr_worker.try_run_build_step("build", "make build")
-    pr_worker.try_run_build_step("test", "make test")
+    pr_worker.validate
 
     assert_true pr_worker.valid_for_merge?, pr_worker.build_status
 
     pr_worker.merge
 
-    sleep 5
     prw2 = Thumbs::PullRequestWorker.new(:repo => test_pr_worker.repo, :pr => test_pr_worker.pr.number)
 
     assert prw2.kind_of?(Thumbs::PullRequestWorker), prw2.inspect
@@ -138,11 +131,4 @@ unit_tests do
     assert pr_worker.state == "closed"
   end
 
-   test "add 3 comments, process BUILD, APPROVAL, MERGE confirmation" do
-     test_pr_worker = create_test_pr("BashoOps/prtester")
-
-
-     pr_worker.close
-
-   end
 end
