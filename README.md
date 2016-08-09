@@ -13,25 +13,21 @@ It merges a pull request for you after doing validation.
 
 ### How does it work ?
 
-* When a comment is made on a pull request, a github webhook is called on /webhook
-* Using the webhook payload, it looks up the pull request.
-* It verifies if the pr is valid for merge:
-  * Merges locally 'git merge feature_branch'
-  * Builds 'make build'
-  * Test 'make test'
-  * Ensures PR contains a minimum of 2 non author review comments
-* Adds a comment on the PR with the build status
-* After final validations, request a PR merge through github API 
+* When a pull request is created, 
+    * a github webhook is called on /webhook
+    * Thumbs will then merge, build and test and record status to a pr comment.
+* When a comment is created,
+    * a github webhook is called on /webhook
+    * Thumbs checks to ensure PR contains a minimum of 2 non author review comments
 
 
-## Installation
+## Setup
 
 ```
 > git clone https://github.com/davidx/thumbs.git
 > cd thumbs
 > rake install
 ```
-## Setup
 ### test
 For testing 
 ```
