@@ -9,10 +9,10 @@ class ThumbsWeb < Sinatra::Base
   helpers Sinatra::WebhookHelpers
 
   post '/webhook' do
-    start_logger
+    log = start_logger
+
 
     payload = JSON.parse(request.body.read)
-    log = Log4r::Logger['mylog']
     log.debug("received webhook #{payload.to_yaml}")
 
     case payload_type(payload)
@@ -28,14 +28,15 @@ class ThumbsWeb < Sinatra::Base
         log.debug "got repo #{repo} and pr #{pr}"
         pr_worker = Thumbs::PullRequestWorker.new(:repo=>repo,:pr=>pr)
         log.debug("new comment #{pr_worker.repo}/pulls/#{pr_worker.pr.number} #{payload['comment']['body']}")
+
         pr_worker.validate
         if pr_worker.valid_for_merge?
           log.debug("new comment #{pr_worker.repo}/pulls/#{pr_worker.pr.number} valid_for_merge? OK ")
+          pr_worker.create_build_status_comment
           pr_worker.create_reviewers_comment
           pr_worker.merge
         else
           log.debug("new comment #{pr_worker.repo}/pulls/#{pr_worker.pr.number} valid_for_merge? returned False")
-          print pr_worker.build_status.to_yaml
         end
       when :unregistered
         log.debug "This is not an event I recognize(new_pr, new_comment): ignoring"

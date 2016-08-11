@@ -7,6 +7,7 @@ module Sinatra
       formatter = Log4r::PatternFormatter.new(:pattern => "[%l] %d :Thumbs: %1m")
       log.outputters = Log4r::StdoutOutputter.new("console", :formatter => formatter)
       log.level = Log4r::DEBUG
+      log
     end
 
     def authenticate_slack

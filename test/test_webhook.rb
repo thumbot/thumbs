@@ -21,7 +21,7 @@ class HelloWorldTest < Test::Unit::TestCase
 
     post '/webhook', new_pr_webhook_payload.to_json
 
-    assert last_response.body.include?("OK"), last_response.body
+    assert_true last_response.body.include?("OK"), last_response.body
 
     assert_true test_pr_worker.open?
     assert test_pr_worker.reviews.length == 0
@@ -30,7 +30,7 @@ class HelloWorldTest < Test::Unit::TestCase
     assert test_pr_worker.bot_comments.length == 1
     assert_true test_pr_worker.open?
 
-    assert test_pr_worker.comments.first['body'] =~ /Build Status for/
+    assert test_pr_worker.comments.first['body'] =~ /Build Status/
 
     create_test_code_reviews(test_pr_worker.repo, test_pr_worker.pr.number)
 
@@ -46,11 +46,14 @@ class HelloWorldTest < Test::Unit::TestCase
 
     assert payload_type(new_comment_payload) == :new_comment, payload_type(new_comment_payload).to_s
 
-    post '/webhook', new_comment_payload.to_json
-    assert last_response.body.include?("OK")
+    post "/webhook", new_comment_payload.to_json
+
+    assert last_response.body.include?("OK"), last_response.body
 
     assert_false test_pr_worker.open?
     test_pr_worker.close
 
   end
+
+
 end

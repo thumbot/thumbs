@@ -5,15 +5,21 @@ module Thumbs
     include Log4r
     attr_reader :build_dir
     attr_reader :build_status
+    attr_accessor :build_steps
     attr_reader :repo
     attr_reader :pr
+    attr_reader :thumb_config
+    attr_reader :log
 
     def initialize(options)
       self.class.authenticate_github
+      @log=Log4r::Logger['mylog']
       @repo = options[:repo]
       @pr = Octokit.pull_request(options[:repo], options[:pr])
       @build_dir=options[:build_dir] || "/tmp/thumbs/#{@repo.gsub(/\//, '_')}_#{@pr.number}"
       @build_status={:steps => {}}
+      @build_steps = [ "make", "make test" ]
+      @thumb_config = { :minimum_reviewers => 2, :build_steps => @build_steps }
     end
 
     def cleanup_build_dir
@@ -25,7 +31,6 @@ module Thumbs
     end
 
     def try_merge
-      log=Log4r::Logger['mylog']
 
       pr_branch="feature_#{DateTime.now.strftime("%s")}"
       # find the target branch in the pr
@@ -34,6 +39,7 @@ module Thumbs
       status[:started_at]=DateTime.now
       cleanup_build_dir
       g = clone(@build_dir)
+      load_thumbs_config
       begin
         g.checkout(@pr.head.sha)
         g.checkout(@pr.base.ref)
@@ -58,11 +64,9 @@ module Thumbs
     end
 
     def try_run_build_step(name, command)
-      log = Logger['mylog']
-
       status={}
 
-      command = "cd #{@build_dir} && #{command}"
+      command = "cd #{@build_dir} && #{command} 2>&1"
       status[:started_at]=DateTime.now
       output = `#{command}`
       status[:ended_at]=DateTime.now
@@ -107,7 +111,6 @@ module Thumbs
     end
 
     def valid_for_merge?
-      log = Logger['mylog']
       log.debug "determine valid_for_merge? #{@repo} #{@pr.number}"
       log_msg_head="#{@repo}##{@pr.number} valid_for_merge? "
       unless state == "open"
@@ -125,8 +128,6 @@ module Thumbs
 
       return false unless @build_status.key?(:steps)
       return false unless @build_status[:steps].key?(:merge)
-      return false unless @build_status[:steps].key?(:build)
-      return false unless @build_status[:steps].key?(:test)
 
       log.debug "passed initial"
       log.debug @pr.state
@@ -153,15 +154,13 @@ module Thumbs
     def validate
       cleanup_build_dir &&
       clone() &&
-      try_merge &&
-      try_run_build_step("build", "make build") &&
-      try_run_build_step("test", "make test")
-    end
-    def create_github_build_status_comment
+      try_merge
 
+      build_steps.each do|build_step|
+        try_run_build_step(build_step.gsub(/\s+/,'_').gsub(/-/,''), build_step)
+      end
     end
     def merge
-      log = Logger['mylog']
       status={}
       status[:started_at]=DateTime.now
       if merged?
@@ -235,7 +234,7 @@ module Thumbs
     end
 
     def open?
-      log = Logger['mylog']
+      log=Log4r::Logger['mylog']
       log.debug("STATE: #{Octokit.pull_request(@repo, @pr.number).state}")
       Octokit.pull_request(@repo, @pr.number).state == "open"
     end
@@ -252,10 +251,10 @@ module Thumbs
 
     def create_build_status_comment
       comment = render_template <<-EOS
-### Build Status for #{@repo}/pulls/#{@pr.number}:
+#### Build Status:
 Looks good @<%= @pr.user.login %>!  :+1:
 <% @build_status[:steps].each do |step_name, status| %>
-### <%= step_name.upcase %>   <%= status[:result].upcase %>
+#### <%= result_image(status[:result]) %> <%= step_name.upcase %>   <%= status[:result].upcase %>
 > Started at: <%= status[:started_at].strftime("%Y-%m-%d %H:%M") %>
 > Duration: <%= status[:ended_at].strftime("%s").to_i-status[:started_at].strftime("%s").to_i %> seconds.
 > Result:  <%= status[:result].upcase %>
@@ -308,6 +307,30 @@ Code reviews from: <%= reviewers.join(", ") %>.
         c.password = ENV['GITHUB_PASS']
       end
     end
+    def load_thumbs_config
+      thumb_file = File.join(@build_dir, ".thumbs.yml")
+      unless File.exist?(thumb_file)
+        log.debug "\".thumbs.yml\" config file not found, using defaults"
+        return false
+      end
+      begin
+        @thumb_config=YAML.load(IO.read(thumb_file))
+        @log.debug "\".thumbs.yml\" config file Loaded: #{@thumb_config.to_yaml}"
+        return true
+      rescue => e
+        log.error "thumbs config file loading failed, using defaults"
+      end
+      false
+    end
+    def result_image(result)
+      case result
+        when :ok
+          ":white_check_mark:"
+        when :error
+          ":no_entry:"
+        else
+          ""
+      end
+    end
   end
-
 end
